@@ -1,0 +1,40 @@
+{
+  "scheme": "acme",
+  "userInterfaceStyle": "automatic",
+  "orientation": "default",
+  "web": {
+    "output": "static"
+  },
+  "plugins": [
+    "expo-router",
+    [
+      "expo-build-properties",
+      {
+        "ios": {
+          "useFrameworks": "static"
+        }
+      }
+    ],
+    [
+      "react-native-google-mobile-ads",
+      {
+        "androidAppId": "ca-app-pub-3940256099942544~3347511713",
+        "iosAppId": "ca-app-pub-3940256099942544~1458002511"
+      }
+    ]
+  ],
+  "name": "onboarding-paywall-sp-app-starter",
+  "slug": "onboarding-paywall-sp-app-starter",
+  "ios": {
+    "bundleIdentifier": "com.engineerbasulto.onboarding-paywall-sp-app-starter"
+  },
+  "android": {
+    "package": "com.engineerbasulto.onboardingpaywallspappstarter"
+  },
+  "extra": {
+    "router": {},
+    "eas": {
+      "projectId": "5e3a5f12-a222-40d3-a6d8-6e0ec04496b4"
+    }
+  }
+}
