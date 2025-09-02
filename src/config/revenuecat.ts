@@ -1,8 +1,9 @@
 export const REVENUECAT_CONFIG = {
   // RevenueCat API Key (本番環境と開発環境で異なる)
   apiKey: {
-    ios: "YOUR_IOS_API_KEY", // RevenueCat ダッシュボードから取得
-    android: "YOUR_ANDROID_API_KEY", // RevenueCat ダッシュボードから取得
+    // RevenueCat ダッシュボードから取得
+    ios: process.env.REVENUECAT_IOS_API_KEY as string,
+    android: process.env.REVENUECAT_ANDROID_API_KEY as string,
   },
 
   // プロダクトID (App Store Connect と Google Play Console で設定)
