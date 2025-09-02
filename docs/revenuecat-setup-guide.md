@@ -6,14 +6,28 @@
 
 ## 1. App Store Connect での設定
 
-### 1.1 サブスクリプションの設定
+### 1.1 サブスクリプショングループの作成
 
 1. [App Store Connect](https://appstoreconnect.apple.com/) にサインイン
 2. 対象アプリ「onboarding-paywall-sp-app-starter」を選択
 3. 「App 内課金」セクションに移動
-4. 「+」ボタンをクリックして新しいサブスクリプションを作成
+4. 「サブスクリプション」タブを選択
+5. 「+」ボタンをクリックして「サブスクリプショングループを作成」を選択
+
+#### Premium Subscription Group
+
+- **グループ名**: Premium Subscription Group
+- **参照名**: Premium Subscription Group
+- **説明**: プレミアム機能へのアクセスを提供するサブスクリプションプラン
+
+### 1.2 サブスクリプションの作成
+
+作成したサブスクリプショングループ内に、各サブスクリプションを作成します：
 
 #### 週額サブスクリプション
+
+1. サブスクリプショングループ内で「+」ボタンをクリック
+2. 「サブスクリプションを作成」を選択
 
 - **参照名**: Weekly Premium Subscription
 - **プロダクト ID**: `weekly_premium_subscription`
@@ -22,6 +36,9 @@
 
 #### 月額サブスクリプション
 
+1. 同じグループ内で「+」ボタンをクリック
+2. 「サブスクリプションを作成」を選択
+
 - **参照名**: Monthly Premium Subscription
 - **プロダクト ID**: `monthly_premium_subscription`
 - **サブスクリプション期間**: 1 ヶ月
@@ -29,14 +46,20 @@
 
 #### 年額サブスクリプション
 
+1. 同じグループ内で「+」ボタンをクリック
+2. 「サブスクリプションを作成」を選択
+
 - **参照名**: Yearly Premium Subscription
 - **プロダクト ID**: `yearly_premium_subscription`
 - **サブスクリプション期間**: 1 年
 - **価格**: 設定に応じて決定
 
-### 1.2 買い切りプロダクトの設定
+### 1.3 買い切りプロダクトの設定
 
 #### ライフタイムアクセス
+
+1. 「App 内課金」セクションの「App 内課金」タブに移動
+2. 「+」ボタンをクリックして「App 内課金を作成」を選択
 
 - **参照名**: Lifetime Premium Access
 - **プロダクト ID**: `lifetime_premium_access`
