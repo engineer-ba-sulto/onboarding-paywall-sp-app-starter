@@ -1,9 +1,10 @@
+import React from "react";
 import { View } from "react-native";
 import Animated from "react-native-reanimated";
 import {
   OnboardingIndicatorLogicProps,
   useOnboardingIndicator,
-} from "../../hooks/useOnboardingIndicator";
+} from "../../hooks/onboarding";
 
 // コンポーネントのProps型定義
 export interface OnboardingIndicatorProps

@@ -1,6 +1,7 @@
+import React from "react";
 import { View } from "react-native";
 import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
-import { AdBannerLogicProps, useAdBanner } from "../../hooks/useAdBanner";
+import { AdBannerLogicProps, useAdBanner } from "../../hooks/ads";
 
 // コンポーネントのProps型定義
 export interface AdBannerProps extends AdBannerLogicProps {}

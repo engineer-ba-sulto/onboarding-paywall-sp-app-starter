@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import adsService from "../services/ads";
+import adsService from "../../services/ads";
 
 /**
  * インタースティシャル広告の状態管理と操作を行うカスタムフック
+ * 汎用的な広告管理機能を提供
  */
 export const useAdInterstitial = () => {
   // 広告の状態管理
@@ -21,6 +22,7 @@ export const useAdInterstitial = () => {
 
   /**
    * インタースティシャル広告を読み込む
+   * @returns Promise<boolean> 読み込み成功時はtrue
    */
   const loadAd = useCallback(async (): Promise<boolean> => {
     try {
@@ -48,6 +50,7 @@ export const useAdInterstitial = () => {
 
   /**
    * インタースティシャル広告を表示
+   * @returns Promise<boolean> 表示成功時はtrue
    */
   const showAd = useCallback(async (): Promise<boolean> => {
     try {
@@ -101,6 +104,28 @@ export const useAdInterstitial = () => {
     setError(null);
   }, []);
 
+  /**
+   * 広告が利用可能かどうかをチェック
+   * @returns boolean 広告が読み込み済みで表示可能な場合true
+   */
+  const isAdReady = useCallback((): boolean => {
+    return isLoaded && !isShowing && !isLoading;
+  }, [isLoaded, isShowing, isLoading]);
+
+  /**
+   * 広告の状態を取得
+   * @returns 広告の現在の状態オブジェクト
+   */
+  const getAdStatus = useCallback(() => {
+    return {
+      isLoaded,
+      isLoading,
+      isShowing,
+      error,
+      isReady: isAdReady(),
+    };
+  }, [isLoaded, isLoading, isShowing, error, isAdReady]);
+
   // コンポーネントマウント時に初期状態を確認
   useEffect(() => {
     checkAdStatus();
@@ -138,6 +163,8 @@ export const useAdInterstitial = () => {
     clearError,
     reset,
     checkAdStatus,
+    isAdReady,
+    getAdStatus,
   };
 };
 

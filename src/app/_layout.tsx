@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Text, View } from "react-native";
 import { OnboardingContainer } from "../components/onboarding";
 import "../global.css";
-import { useOnboarding } from "../hooks/useOnboarding";
+import { useOnboarding } from "../hooks/onboarding";
 import { adsService } from "../services";
 
 export default function Layout() {

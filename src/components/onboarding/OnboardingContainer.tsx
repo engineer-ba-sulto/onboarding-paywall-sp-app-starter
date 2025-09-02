@@ -1,8 +1,9 @@
+import React from "react";
 import { SafeAreaView, View } from "react-native";
 import {
   OnboardingContainerLogicProps,
   useOnboardingContainer,
-} from "../../hooks/useOnboardingContainer";
+} from "../../hooks/onboarding";
 import { OnboardingIndicator } from "./OnboardingIndicator";
 import { OnboardingPager } from "./OnboardingPager";
 import { OnboardingScreen1 } from "./OnboardingScreen1";

@@ -1,8 +1,9 @@
+import React from "react";
 import { ScrollView, View } from "react-native";
 import {
   OnboardingPagerLogicProps,
   useOnboardingPager,
-} from "../../hooks/useOnboardingPager";
+} from "../../hooks/onboarding";
 
 // コンポーネントのProps型定義
 export interface OnboardingPagerProps extends OnboardingPagerLogicProps {}

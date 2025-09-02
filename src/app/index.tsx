@@ -1,43 +1,32 @@
 import { AdBanner } from "@/components/ads";
-import useAdInterstitial from "@/hooks/useAdInterstitial";
-
+import { useAdInterstitialUI } from "@/hooks";
 import React, { useEffect } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Page() {
-  const { isLoaded, isLoading, error, loadAd, showAd, clearError } =
-    useAdInterstitial();
+  const {
+    isLoaded,
+    isLoading,
+    error,
+    handleShowAd,
+    handleReloadAd,
+    handleLevelClearSimulation,
+    handleError,
+  } = useAdInterstitialUI();
 
   // 画面表示時に広告を読み込む
   useEffect(() => {
-    loadAd();
-  }, [loadAd]);
+    // 初期化時に広告を読み込む
+    handleReloadAd();
+  }, []);
 
   // エラーが発生した場合のアラート表示
   useEffect(() => {
     if (error) {
-      Alert.alert("広告エラー", error, [{ text: "OK", onPress: clearError }]);
+      handleError();
     }
-  }, [error, clearError]);
-
-  const handleShowAd = async () => {
-    const success = await showAd();
-    if (!success) {
-      Alert.alert(
-        "広告表示失敗",
-        "広告が準備できていません。再度お試しください。",
-        [{ text: "OK" }]
-      );
-    }
-  };
-
-  const handleReloadAd = async () => {
-    const success = await loadAd();
-    if (success) {
-      Alert.alert("成功", "広告を再読み込みしました");
-    }
-  };
+  }, [error, handleError]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -90,25 +79,7 @@ export default function Page() {
 
             <TouchableOpacity
               className="bg-purple-500 px-6 py-3 rounded-lg w-full items-center"
-              onPress={() => {
-                Alert.alert("レベルクリア！", "次のレベルに進みます", [
-                  {
-                    text: "キャンセル",
-                    style: "cancel",
-                  },
-                  {
-                    text: "広告を見て進む",
-                    onPress: async () => {
-                      const success = await showAd();
-                      if (success) {
-                        Alert.alert("次のレベルへ！");
-                      } else {
-                        Alert.alert("次のレベルへ！", "（広告なし）");
-                      }
-                    },
-                  },
-                ]);
-              }}
+              onPress={handleLevelClearSimulation}
             >
               <Text className="text-white font-semibold">
                 レベルクリアをシミュレート
