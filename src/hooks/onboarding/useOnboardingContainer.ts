@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import { handleNavigationError } from "../../utils/navigationHelpers";
 import { useOnboarding } from "./useOnboarding";
@@ -61,8 +62,12 @@ export const useOnboardingContainer = ({
 
   const handleComplete = async () => {
     try {
-      // オンボーディング完了状態を保存（UIの再描画で自動的にタブナビゲーションに遷移）
+      // オンボーディング完了状態を保存
       await completeOnboarding();
+
+      // オンボーディング完了後にペイウォール画面に遷移
+      router.replace("/paywall");
+
       if (onComplete) {
         onComplete();
       }
