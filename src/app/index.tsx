@@ -122,6 +122,15 @@ export default function Page() {
               ペイウォール画面を直接表示
             </Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-green-600 px-6 py-3 rounded-lg w-full items-center"
+            onPress={() => router.push("/mock-paywall")}
+          >
+            <Text className="text-white font-semibold">
+              モックペイウォール画面（スクリーンショット用）
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* インタースティシャル広告コントロール */}
