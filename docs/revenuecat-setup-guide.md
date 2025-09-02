@@ -30,7 +30,7 @@
 2. 「サブスクリプションを作成」を選択
 
 - **参照名**: Weekly Premium Subscription
-- **プロダクト ID**: `weekly_premium_subscription`
+- **プロダクト ID**: `weekly_premium_subscription_demo`
 - **サブスクリプション期間**: 1 週間
 - **価格**: 設定に応じて決定
 
@@ -40,7 +40,7 @@
 2. 「サブスクリプションを作成」を選択
 
 - **参照名**: Monthly Premium Subscription
-- **プロダクト ID**: `monthly_premium_subscription`
+- **プロダクト ID**: `monthly_premium_subscription_demo`
 - **サブスクリプション期間**: 1 ヶ月
 - **価格**: 設定に応じて決定
 
@@ -50,7 +50,7 @@
 2. 「サブスクリプションを作成」を選択
 
 - **参照名**: Yearly Premium Subscription
-- **プロダクト ID**: `yearly_premium_subscription`
+- **プロダクト ID**: `yearly_premium_subscription_demo`
 - **サブスクリプション期間**: 1 年
 - **価格**: 設定に応じて決定
 
@@ -62,7 +62,7 @@
 2. 「+」ボタンをクリックして「App 内課金を作成」を選択
 
 - **参照名**: Lifetime Premium Access
-- **プロダクト ID**: `lifetime_premium_access`
+- **プロダクト ID**: `lifetime_premium_access_demo`
 - **タイプ**: 非消耗型
 - **価格**: 設定に応じて決定
 
@@ -78,21 +78,21 @@
 #### 週額サブスクリプション
 
 - **商品名**: Weekly Premium Subscription
-- **商品 ID**: `weekly_premium_subscription`
+- **商品 ID**: `weekly_premium_subscription_demo`
 - **請求期間**: 1 週間
 - **価格**: 設定に応じて決定
 
 #### 月額サブスクリプション
 
 - **商品名**: Monthly Premium Subscription
-- **商品 ID**: `monthly_premium_subscription`
+- **商品 ID**: `monthly_premium_subscription_demo`
 - **請求期間**: 1 ヶ月
 - **価格**: 設定に応じて決定
 
 #### 年額サブスクリプション
 
 - **商品名**: Yearly Premium Subscription
-- **商品 ID**: `yearly_premium_subscription`
+- **商品 ID**: `yearly_premium_subscription_demo`
 - **請求期間**: 1 年
 - **価格**: 設定に応じて決定
 
@@ -101,7 +101,7 @@
 #### ライフタイムアクセス
 
 - **商品名**: Lifetime Premium Access
-- **商品 ID**: `lifetime_premium_access`
+- **商品 ID**: `lifetime_premium_access_demo`
 - **商品タイプ**: アプリ内プロダクト
 - **価格**: 設定に応じて決定
 
@@ -116,10 +116,10 @@
 
 #### 追加するプロダクト
 
-- `weekly_premium_subscription`
-- `monthly_premium_subscription`
-- `yearly_premium_subscription`
-- `lifetime_premium_access`
+- `weekly_premium_subscription_demo`
+- `monthly_premium_subscription_demo`
+- `yearly_premium_subscription_demo`
+- `lifetime_premium_access_demo`
 
 ### 3.2 Entitlements の設定
 
@@ -154,28 +154,28 @@
 
 - **Package ID**: `weekly_package`
 - **Display Name**: Weekly
-- **Product**: `weekly_premium_subscription`
+- **Product**: `weekly_premium_subscription_demo`
 - **Entitlement**: `premium_access`
 
 ##### 月額パッケージ
 
 - **Package ID**: `monthly_package`
 - **Display Name**: Monthly
-- **Product**: `monthly_premium_subscription`
+- **Product**: `monthly_premium_subscription_demo`
 - **Entitlement**: `premium_access`
 
 ##### 年額パッケージ
 
 - **Package ID**: `yearly_package`
 - **Display Name**: Yearly
-- **Product**: `yearly_premium_subscription`
+- **Product**: `yearly_premium_subscription_demo`
 - **Entitlement**: `premium_access`
 
 ##### ライフタイムパッケージ
 
 - **Package ID**: `lifetime_package`
 - **Display Name**: Lifetime
-- **Product**: `lifetime_premium_access`
+- **Product**: `lifetime_premium_access_demo`
 - **Entitlement**: `premium_access`
 
 ## 4. 設定完了後の確認事項
