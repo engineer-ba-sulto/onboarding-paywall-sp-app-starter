@@ -1,6 +1,9 @@
 import { AdBanner } from "@/components/ads";
+import { OnboardingContainer } from "@/components/onboarding";
+import { onboardingScreens } from "@/config";
 import { useAdInterstitialUI } from "@/hooks";
-import React, { useEffect } from "react";
+import { useOnboarding } from "@/hooks/onboarding";
+import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -15,6 +18,9 @@ export default function Page() {
     handleError,
   } = useAdInterstitialUI();
 
+  const { resetOnboarding } = useOnboarding();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
   // 画面表示時に広告を読み込む
   useEffect(() => {
     // 初期化時に広告を読み込む
@@ -28,6 +34,33 @@ export default function Page() {
     }
   }, [error, handleError]);
 
+  // オンボーディングを表示する処理
+  const handleShowOnboarding = async () => {
+    try {
+      // オンボーディング状態をリセットしてから表示
+      await resetOnboarding();
+      setShowOnboarding(true);
+    } catch (error) {
+      console.error("Failed to show onboarding:", error);
+    }
+  };
+
+  // オンボーディングを閉じる処理
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
+  };
+
+  // オンボーディングが表示されている場合はオンボーディング画面を表示
+  if (showOnboarding) {
+    return (
+      <OnboardingContainer
+        onComplete={handleCloseOnboarding}
+        onSkip={handleCloseOnboarding}
+        screens={onboardingScreens}
+      />
+    );
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 justify-center items-center px-6">
@@ -38,6 +71,22 @@ export default function Page() {
           <Text className="text-base text-center text-gray-600 max-w-[280px]">
             このアプリはAdMob広告の実装サンプルです
           </Text>
+        </View>
+
+        {/* オンボーディング確認ボタン */}
+        <View className="items-center gap-4 w-full max-w-[300px] mb-6">
+          <Text className="text-lg font-semibold text-gray-800">
+            オンボーディング
+          </Text>
+
+          <TouchableOpacity
+            className="bg-orange-500 px-6 py-3 rounded-lg w-full items-center"
+            onPress={handleShowOnboarding}
+          >
+            <Text className="text-white font-semibold">
+              オンボーディングを確認
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* インタースティシャル広告コントロール */}
