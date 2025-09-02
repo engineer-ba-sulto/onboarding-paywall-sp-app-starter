@@ -2,19 +2,19 @@ export const REVENUECAT_CONFIG = {
   // RevenueCat API Key (本番環境と開発環境で異なる)
   apiKey: {
     // RevenueCat ダッシュボードから取得
-    ios: process.env.REVENUECAT_IOS_API_KEY as string,
-    android: process.env.REVENUECAT_ANDROID_API_KEY as string,
+    ios: process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY as string,
+    android: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY as string,
   },
 
   // プロダクトID (App Store Connect と Google Play Console で設定)
   products: {
     // サブスクリプション
-    weekly: "weekly_premium_subscription",
-    monthly: "monthly_premium_subscription",
-    yearly: "yearly_premium_subscription",
+    weekly: "weekly_premium_subscription_demo",
+    monthly: "monthly_premium_subscription_demo",
+    yearly: "yearly_premium_subscription_demo",
 
     // 買い切りプロダクト
-    lifetime: "lifetime_premium_access",
+    lifetime: "lifetime_premium_access_demo",
   },
 
   // Entitlements (アクセス権)
