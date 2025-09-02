@@ -22,6 +22,48 @@
 
 1. Supabase プロジェクト内に `revenuecat-webhooks` という名前の Edge Function を作成する。
 2. Function 内で、RevenueCat から POST されるリクエストボディをパースするロジックを実装する。
+
+   ```typescript
+   // supabase/functions/revenuecat-webhooks/index.ts
+   import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+   import { createClient } from "https://esm.sh/@supabase/supabase-js@2.0.0";
+
+   serve(async (req) => {
+     const signature = req.headers.get("Authorization");
+     const requiredSignature = Deno.env.get("REVENUECAT_WEBHOOK_SIGNATURE");
+
+     // 署名を検証
+     if (signature !== requiredSignature) {
+       return new Response("Unauthorized", { status: 401 });
+     }
+
+     const content = await req.json();
+     const { event } = content;
+
+     // ここでイベントタイプに応じて処理を分岐
+     // 例: event.type === 'INITIAL_PURCHASE'
+     // event.app_user_id を使って自社のユーザーDBを更新
+
+     const supabase = createClient(
+       Deno.env.get("SUPABASE_URL") ?? "",
+       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+     );
+
+     // DB更新処理...
+     const { error } = await supabase
+       .from("profiles")
+       .update({
+         is_premium: true,
+         // ...
+       })
+       .eq("id", event.app_user_id);
+
+     return new Response(JSON.stringify({ received: true }), {
+       headers: { "Content-Type": "application/json" },
+     });
+   });
+   ```
+
 3. （推奨）リクエストヘッダの Authorization トークンを検証し、正当なリクエストであることを確認する。
 4. イベントタイプ（`INITIAL_PURCHASE`, `RENEWAL`, `CANCELLATION`など）に応じて、Supabase データベースのユーザーテーブルなどを更新する。
 5. Function をデプロイし、取得した URL を RevenueCat ダッシュボードの Webhook 設定ページに入力する。

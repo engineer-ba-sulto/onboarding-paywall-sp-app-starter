@@ -21,6 +21,40 @@
 ### 実装手順
 
 1. プレミアム機能へのアクセスを保護するための高階コンポーネント（HOC）やラッパーコンポーネントを作成する（例: `ProtectedScreen`）。
+
+   ```typescript
+   // src/components/auth/withSubscription.tsx
+   import React from "react";
+   import { useAuthStore } from "../../store/auth";
+   import PaywallScreen from "../../components/paywall/PaywallScreen"; // 仮
+
+   export const withSubscription = (WrappedComponent) => {
+     return (props) => {
+       const { isSubscriptionActive } = useAuthStore();
+
+       if (!isSubscriptionActive) {
+         // 未購読の場合はペイウォールを表示
+         return <PaywallScreen />;
+       }
+
+       // 購読済みの場合は本来のコンポーネントを表示
+       return <WrappedComponent {...props} />;
+     };
+   };
+   ```
+
+   ```typescript
+   // src/app/premium-feature.tsx
+   import { withSubscription } from "../components/auth/withSubscription";
+
+   const PremiumFeatureScreen = () => {
+     // ... プレミアム機能のコンテンツ
+     return <Text>This is a premium feature!</Text>;
+   };
+
+   export default withSubscription(PremiumFeatureScreen);
+   ```
+
 2. このコンポーネント内で、グローバルに管理されている購読状態、または`Purchases.getCustomerInfo()`で取得した`customerInfo`オブジェクトをチェックする。
 3. `customerInfo.entitlements.active['premium']` のような形で、特定のエンタイトルメントが有効かどうかを判定する。
 4. **有効な場合**: ラップされた子コンポーネント（本来のプレミアム機能画面）をレンダリングする。

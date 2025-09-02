@@ -23,6 +23,35 @@
 
 1. `usePaywall`フック内に、復元処理を行う関数を定義する。
 2. 関数の内部で`Purchases.restorePurchases()`を呼び出す。
+
+   ```typescript
+   import Purchases from "react-native-purchases";
+   import { useState } from "react";
+
+   // usePaywall.ts内
+   const [isLoading, setIsLoading] = useState(false);
+
+   const restorePurchases = async () => {
+     try {
+       setIsLoading(true);
+       const customerInfo = await Purchases.restorePurchases();
+
+       // 復元されたユーザー情報でエンタイトルメントをチェック
+       if (typeof customerInfo.entitlements.active["premium"] !== "undefined") {
+         // ペイウォールを閉じるなどの処理
+         alert("購入が復元されました。");
+       } else {
+         alert("復元対象の購入が見つかりませんでした。");
+       }
+     } catch (e) {
+       console.error(e);
+       alert("復元に失敗しました。");
+     } finally {
+       setIsLoading(false);
+     }
+   };
+   ```
+
 3. `try...catch`ブロックを使用して、成功と失敗のケースをハンドリングする。
    - **成功時**: `restorePurchases`は最新の`CustomerInfo`を返す。エンタイトルメントが有効になっているかを確認し、有効であればペイウォールを閉じる。復元対象の購入がない場合も成功として扱われるが、エンタイトルメントは有効にならない。
    - **失敗時**: エラーをキャッチし、ユーザーにエラーメッセージを表示する。

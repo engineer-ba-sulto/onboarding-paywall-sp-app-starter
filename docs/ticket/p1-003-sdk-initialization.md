@@ -24,21 +24,32 @@
 3. `Platform.OS`を判定し、iOS と Android それぞれに対応する RevenueCat API キーを使って`Purchases.configure()`を呼び出す。
 
    ```typescript
+   // App.tsx や ルートの _layout.tsx など
    import { Platform } from "react-native";
    import Purchases from "react-native-purchases";
    import { useEffect } from "react";
+   import { revenuecatConfig } from "../config/revenuecat"; // P7-001で作成
 
-   // ... コンポーネント内
-   useEffect(() => {
-     if (Platform.OS === "ios") {
-       Purchases.configure({ apiKey: "YOUR_APPLE_API_KEY" });
-     } else if (Platform.OS === "android") {
-       Purchases.configure({ apiKey: "YOUR_GOOGLE_API_KEY" });
-     }
-   }, []);
+   const RootLayout = () => {
+     useEffect(() => {
+       Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG); // 開発中はデバッグログを有効化
+
+       const apiKey = Platform.select({
+         ios: revenuecatConfig.apiKey.ios,
+         android: revenuecatConfig.apiKey.android,
+       });
+
+       if (apiKey) {
+         Purchases.configure({ apiKey });
+       }
+     }, []);
+
+     // ... ここにナビゲーションなどのコンポーネントが続く
+     return <Stack />;
+   };
    ```
 
-4. API キーはハードコーディングせず、設定ファイルや環境変数から読み込むようにする（関連チケット: P2-016）。
+4. API キーはハードコーディングせず、設定ファイルや環境変数から読み込むようにする（関連チケット: P7-001）。
 
 ### テスト項目
 

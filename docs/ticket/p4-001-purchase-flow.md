@@ -23,6 +23,35 @@
 
 1. `usePaywall`フック内に、選択された`Package`を引数に取る購入関数を定義する。
 2. 関数の内部で`Purchases.purchasePackage()`を呼び出す。
+
+   ```typescript
+   import Purchases, { PurchasesPackage } from "react-native-purchases";
+   import { useState } from "react";
+
+   // usePaywall.ts内
+   const [isLoading, setIsLoading] = useState(false);
+
+   const purchasePackage = async (packageToPurchase: PurchasesPackage) => {
+     try {
+       setIsLoading(true);
+       const { customerInfo } = await Purchases.purchasePackage(
+         packageToPurchase
+       );
+
+       // customerInfo.entitlements.active['premium'] などをチェック
+       if (typeof customerInfo.entitlements.active["premium"] !== "undefined") {
+         // ペイウォールを閉じるなどの処理
+       }
+     } catch (e) {
+       if (!e.userCancelled) {
+         console.error(e);
+       }
+     } finally {
+       setIsLoading(false);
+     }
+   };
+   ```
+
 3. `try...catch`ブロックを使用して、成功と失敗のケースをハンドリングする。
    - **成功時**: `purchasePackage`は最新の`CustomerInfo`を返す。ユーザーのエンタイトルメントが有効になったことを確認し、ペイウォールを閉じるなどの画面遷移を行う。
    - **失敗時**: エラーオブジェクトをキャッチする。`error.userCancelled`プロパティなどを確認して、ユーザーによるキャンセルかどうかを判定する。

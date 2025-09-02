@@ -26,18 +26,39 @@
 4. `useEffect`のクリーンアップ関数内で`Purchases.removeCustomerInfoUpdateListener()`を呼び出し、メモリリークを防ぐ。
 
    ```typescript
-   useEffect(() => {
-     const customerInfoUpdateListener = (customerInfo: CustomerInfo) => {
-       // グローバルな購読状態を更新するロジック
-       updateSubscriptionStatus(customerInfo);
-     };
+   // AuthProvider.tsx など、アプリのライフサイクルで常にマウントされている場所
+   import { useEffect } from "react";
+   import Purchases, { CustomerInfo } from "react-native-purchases";
+   import { useAuthStore } from "../store/auth"; // ZustandやContextなど
 
-     Purchases.addCustomerInfoUpdateListener(customerInfoUpdateListener);
+   const AuthProvider = ({ children }) => {
+     const { setSubscriptionActive } = useAuthStore();
 
-     return () => {
-       Purchases.removeCustomerInfoUpdateListener(customerInfoUpdateListener);
-     };
-   }, []);
+     useEffect(() => {
+       const customerInfoUpdateListener = (customerInfo: CustomerInfo) => {
+         const isPremium =
+           typeof customerInfo.entitlements.active["premium"] !== "undefined";
+         setSubscriptionActive(isPremium);
+       };
+
+       Purchases.addCustomerInfoUpdateListener(customerInfoUpdateListener);
+
+       // 初期状態も取得しておく
+       const checkInitialStatus = async () => {
+         const customerInfo = await Purchases.getCustomerInfo();
+         const isPremium =
+           typeof customerInfo.entitlements.active["premium"] !== "undefined";
+         setSubscriptionActive(isPremium);
+       };
+       checkInitialStatus();
+
+       return () => {
+         Purchases.removeCustomerInfoUpdateListener(customerInfoUpdateListener);
+       };
+     }, []);
+
+     return <>{children}</>;
+   };
    ```
 
 ### テスト項目

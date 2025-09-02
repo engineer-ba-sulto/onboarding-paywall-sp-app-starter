@@ -22,7 +22,30 @@ RevenueCat の Offerings から取得した購入パッケージ（プラン）�
 ### 実装手順
 
 1. `Purchases.getOfferings()`を呼び出して、現在の Offerings を取得するロジックを実装する（カスタムフックに分離推奨）。
-2. 取得した`offerings.current.availablePackages`をループ処理する。
+
+   ```typescript
+   import Purchases, { PurchasesOffering } from "react-native-purchases";
+   import { useEffect, useState } from "react";
+
+   // usePaywall.ts内
+   const [offering, setOffering] = useState<PurchasesOffering | null>(null);
+
+   useEffect(() => {
+     const getOfferings = async () => {
+       try {
+         const offerings = await Purchases.getOfferings();
+         if (offerings.current !== null) {
+           setOffering(offerings.current);
+         }
+       } catch (e) {
+         console.error(e);
+       }
+     };
+     getOfferings();
+   }, []);
+   ```
+
+2. 取得した`offering.availablePackages`をループ処理する。
 3. 各`Package`オブジェクトから`product.priceString`, `product.title`, `packageType`などの情報を抽出し、UI コンポーネントに渡して表示する。
 4. ユーザーがプランを選択した際に、選択された`Package`を State で管理する。
 
