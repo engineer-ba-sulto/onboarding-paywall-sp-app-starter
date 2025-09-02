@@ -1,16 +1,32 @@
 import { OnboardingContainer } from "@/components/onboarding";
-import { onboardingScreens } from "@/config";
+import { onboardingScreens, REVENUECAT_CONFIG } from "@/config";
 import "@/global.css";
 import { useOnboarding } from "@/hooks/onboarding";
 import { adsService } from "@/services";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
+import Purchases from "react-native-purchases";
 
 export default function Layout() {
   const { isLoading, hasSeenOnboarding } = useOnboarding();
 
   useEffect(() => {
+    // RevenueCat SDKの初期化
+    // 開発中はデバッグログを有効化
+    Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
+
+    const apiKey = Platform.select({
+      ios: REVENUECAT_CONFIG.apiKey.ios,
+      android: REVENUECAT_CONFIG.apiKey.android,
+    });
+
+    if (apiKey && apiKey.includes("YOUR_")) {
+      console.warn("RevenueCat APIキーが設定されていません。");
+    } else if (apiKey) {
+      Purchases.configure({ apiKey });
+    }
+
     // AdsServiceを使用してAdMobを初期化
     adsService
       .initialize()

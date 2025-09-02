@@ -1,53 +1,50 @@
 ### 基本情報
 
-**タイトル**: RevenueCat のプロダクト設定
+**タイトル**: RevenueCat のプロダクト設定（サンドボックス環境）
 
 ### 概要
 
-App Store Connect と Google Play Console でアプリ内課金プロダクトを設定し、RevenueCat ダッシュボードでそれらを Entitlements, Offerings, Packages として構成します。
+サンドボックス（テスト）環境でアプリ内課金をテストできるように、App Store Connect と Google Play Console でアプリ内課金プロダクトを設定し、RevenueCat ダッシュボードで構成します。
 
 ### 要件
 
-- [ ] App Store Connect で週額・月額・年額のサブスクリプションを設定する
-- [ ] App Store Connect で買い切りプロダクトを設定する
-- [ ] Google Play Console で週額・月額・年額のサブスクリプションを設定する
-- [ ] Google Play Console で買い切りプロダクトを設定する
-- [ ] RevenueCat ダッシュボードで Entitlements を設定する
-- [ ] RevenueCat ダッシュボードで Offerings と Packages を設定する
+- [ ] App Store Connect でサンドボックス用のプロダクトを設定する
+- [ ] Google Play Console でテスト用のプロダクトを設定する
+- [ ] RevenueCat ダッシュボードで Entitlements, Offerings, Packages を構成する
+- [ ] サンドボックス環境でテスト購入を行うための設定を完了する
 
 ### 技術仕様
 
 **技術スタック**: App Store Connect, Google Play Console, RevenueCat
-**ファイル**: -
+**ファイル**: `src/config/revenuecat.ts`, `docs/revenuecat-setup-guide.md`, `docs/sandbox-testing-guide.md`
 **API**: -
 
 ### 実装手順
 
-1. Apple Developer アカウントで App Store Connect にサインインする。
-2. 対象アプリの「App 内課金」セクションで、サブスクリプションと非消耗型プロダクトを作成する。
-3. Google Play Console にサインインする。
-4. 対象アプリの「商品」セクションで、サブスクリプションとアプリ内プロダクトを作成する。
-5. RevenueCat プロジェクトのダッシュボードを開く。
-6. `Products`メニューで App Store と Play Store のプロダクト情報を同期または手動で追加する。
-7. `Entitlements`メニューで、プレミアムアクセス権などを定義する（例: `premium`）。
-8. `Offerings`メニューで、デフォルトのオファリング内に各プロダクトを`Packages`として割り当てる（週額、月額、年額、買い切り）。
+1. `docs/revenuecat-setup-guide.md` に従って、各プラットフォームでプロダクトを作成する。
+2. `docs/sandbox-testing-guide.md` に従って、サンドボックス環境のテスト設定を行う。
+3. RevenueCat プロジェクトのダッシュボードで、プロダクト情報が正しく同期されていることを確認する。
+4. `Entitlements`, `Offerings`, `Packages` の構成を行う。
+5. テストビルドを作成し、サンドボックスユーザーでテスト購入が実行できることを確認する。
 
 ### テスト項目
 
-- [ ] RevenueCat のダッシュボードで全てのプロダクトが正しく表示されること
-- [ ] Entitlement がプロダクトに紐づいていること
-- [ ] Offering と Package が正しく構成されていること
+- [ ] RevenueCat のデバッグログで、プロダクト情報が正しく取得できていること
+- [ ] サンドボックスユーザーでテスト購入が成功すること
+- [ ] 購入後、`premium_access` の Entitlement が付与されること
 
 ### 完了条件
 
-- [ ] App Store Connect と Google Play Console のプロダクト設定が完了していること
+- [ ] App Store Connect と Google Play Console のプロダクト設定が、サンドボックスでのテスト向けに完了していること
 - [ ] RevenueCat での Entitlements, Offerings, Packages の構成が完了していること
+- [ ] サンドボックス環境でテスト購入ができる状態になっていること
 
 ### 注意事項
 
-プロダクト ID はプラットフォーム間で統一するか、RevenueCat 側で正しくマッピングする必要があります。
+- このチケットはアプリのリリースを前提としません。あくまで開発およびテスト環境の構築を目的とします。
+- 実際の API キーは `src/config/revenuecat.ts` に設定する必要がありますが、このリポジトリにはコミットしないでください。
 
 ### 関連チケット
 
 - P1-003-sdk-initialization
-- P1-006-dynamic-plan-display
+- P4-001-purchase-flow

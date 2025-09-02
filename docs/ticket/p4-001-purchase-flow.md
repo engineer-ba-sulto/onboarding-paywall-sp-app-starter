@@ -1,80 +1,55 @@
 ### 基本情報
 
-**タイトル**: 購入フローの実装
+**タイトル**: 購入フローの実装（サンドボックス）
 
 ### 概要
 
-ユーザーが選択したプランを購入するためのフローを実装します。
+ユーザーが選択したプランを購入するためのフローを実装し、サンドボックス環境でテストできるようにします。
 
 ### 要件
 
 - [ ] ユーザーが選択した`Package`オブジェクトを使用して購入処理を開始する
 - [ ] 購入処理中の待機状態を UI にフィードバックする
-- [ ] 購入成功のハンドリングを行う
+- [ ] サンドボックスでの購入成功をハンドリングする
 - [ ] 購入失敗・キャンセルのハンドリングを行う
 
 ### 技術仕様
 
 **技術スタック**: React Native, RevenueCat
-**ファイル**: `src/hooks/paywall/usePaywall.ts`
+**ファイル**: `src/hooks/paywall/usePaywall.ts` （または購入ロジックを実装するファイル）
 **API**: `Purchases.purchasePackage()`
 
 ### 実装手順
 
-1. `usePaywall`フック内に、選択された`Package`を引数に取る購入関数を定義する。
-2. 関数の内部で`Purchases.purchasePackage()`を呼び出す。
-
-   ```typescript
-   import Purchases, { PurchasesPackage } from "react-native-purchases";
-   import { useState } from "react";
-
-   // usePaywall.ts内
-   const [isLoading, setIsLoading] = useState(false);
-
-   const purchasePackage = async (packageToPurchase: PurchasesPackage) => {
-     try {
-       setIsLoading(true);
-       const { customerInfo } = await Purchases.purchasePackage(
-         packageToPurchase
-       );
-
-       // customerInfo.entitlements.active['premium'] などをチェック
-       if (typeof customerInfo.entitlements.active["premium"] !== "undefined") {
-         // ペイウォールを閉じるなどの処理
-       }
-     } catch (e) {
-       if (!e.userCancelled) {
-         console.error(e);
-       }
-     } finally {
-       setIsLoading(false);
-     }
-   };
-   ```
-
-3. `try...catch`ブロックを使用して、成功と失敗のケースをハンドリングする。
-   - **成功時**: `purchasePackage`は最新の`CustomerInfo`を返す。ユーザーのエンタイトルメントが有効になったことを確認し、ペイウォールを閉じるなどの画面遷移を行う。
-   - **失敗時**: エラーオブジェクトをキャッチする。`error.userCancelled`プロパティなどを確認して、ユーザーによるキャンセルかどうかを判定する。
-4. 購入処理中はローディングインジケーターを表示するなどして、ユーザーに待機状態であることを伝える。
-5. 成功時・失敗時には適切なアラートやメッセージを表示する。
+1.  購入処理を行うカスタムフック（例: `usePaywall`）内に、選択された`Package`を引数に取る非同期関数を定義する。
+2.  関数の内部で`Purchases.purchasePackage()`を呼び出す。
+3.  `try...catch...finally`ブロックを使用して、各ケースをハンドリングする。
+    - **成功時**: 返される`customerInfo`オブジェクトを検証し、`premium`エンタイトルメントが有効になったことを確認する。その後、ペイウォールを閉じるなどの画面遷移を行う。
+    - **失敗時**: エラーオブジェクトをキャッチする。`error.userCancelled`プロパティを確認し、ユーザーによるキャンセル操作とそれ以外のエラー（ネットワークエラーなど）を区別する。
+    - **共通処理**: `finally`ブロックで、ローディングインジケーターを非表示にするなどの共通処理を行う。
+4.  購入処理中はローディングインジケーターを表示し、ユーザーに待機状態であることを明確に伝える。
+5.  処理結果（成功、キャンセル、失敗）に応じて、適切なアラートやモーダルでユーザーにフィードバックする。
 
 ### テスト項目
 
 - [ ] 購入ボタンをタップすると、OS の購入確認ダイアログが表示されること
-- [ ] テスト購入が成功し、エンタイトルメントが有効になること
-- [ ] 購入をキャンセルした場合に、アプリが正常に元の状態に戻ること
-- [ ] 購入失敗時にエラーメッセージが表示されること
+- [ ] `docs/sandbox-testing-guide.md` に従って、**サンドックステストユーザー**で購入処理を行う
+- [ ] テスト購入が成功し、`premium`エンタイトルメントが有効になることを RevenueCat のデバッグログやダッシュボードで確認できること
+- [ ] 購入をキャンセルした場合に、アプリがエラーにならず元の画面に留まること
+- [ ] （可能であれば）ネットワーク接続をオフにするなどして、購入失敗時にエラーメッセージが正しく表示されることを確認する
 
 ### 完了条件
 
-- [ ] ユーザーがプランを購入し、プレミアム機能へのアクセス権を取得できること
+- [ ] サンドックステストユーザーがプランを購入し、プレミアム機能へのアクセス権（Entitlement）をテスト環境で取得できること
 
 ### 注意事項
 
-テストには`react-native-purchases`が提供するサンドボックス環境（TestFlight や Google Play の内部テストトラックなど）を使用する必要があります。
+- テストは必ず `docs/sandbox-testing-guide.md` に記載の手順に沿って、サンドボックス環境で行ってください。
+- 実際のクレジットカード情報が要求されることはありません。
 
 ### 関連チケット
 
+- P1-002-product-setup
 - P2-002-dynamic-plan-display
 - P4-002-restore-flow
 - P5-002-feature-guard

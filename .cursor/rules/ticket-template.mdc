@@ -1,9 +1,6 @@
 ---
-description:
-globs:
-alwaysApply: true
+alwaysApply: false
 ---
-
 あなたは優秀なプロジェクトマネージャー兼テックリードです。
 
 以下の命名ルールとテンプレートに従って、開発チケットを作成してください：

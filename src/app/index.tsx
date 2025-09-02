@@ -3,6 +3,7 @@ import { OnboardingContainer } from "@/components/onboarding";
 import { onboardingScreens } from "@/config";
 import { useAdInterstitialUI } from "@/hooks";
 import { useOnboarding } from "@/hooks/onboarding";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -85,6 +86,49 @@ export default function Page() {
           >
             <Text className="text-white font-semibold">
               オンボーディングを確認
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* ペイウォール表示トリガーのテストボタン */}
+        <View className="items-center gap-4 w-full max-w-[300px] mb-6">
+          <Text className="text-lg font-semibold text-gray-800">
+            ペイウォール表示トリガー
+          </Text>
+
+          <TouchableOpacity
+            className="bg-red-500 px-6 py-3 rounded-lg w-full items-center"
+            onPress={() => router.push("/premium-feature")}
+          >
+            <Text className="text-white font-semibold">
+              プレミアム機能アクセス（ペイウォール表示）
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-purple-500 px-6 py-3 rounded-lg w-full items-center"
+            onPress={() => router.push("/usage-limit")}
+          >
+            <Text className="text-white font-semibold">
+              利用制限テスト（ペイウォール表示）
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-indigo-500 px-6 py-3 rounded-lg w-full items-center"
+            onPress={() => router.push("/paywall")}
+          >
+            <Text className="text-white font-semibold">
+              ペイウォール画面を直接表示
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="bg-green-600 px-6 py-3 rounded-lg w-full items-center"
+            onPress={() => router.push("/mock-paywall")}
+          >
+            <Text className="text-white font-semibold">
+              モックペイウォール画面（スクリーンショット用）
             </Text>
           </TouchableOpacity>
         </View>

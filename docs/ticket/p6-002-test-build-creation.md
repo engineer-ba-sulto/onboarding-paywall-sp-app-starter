@@ -1,15 +1,15 @@
 ### 基本情報
 
-**タイトル**: EAS Development Build の作成
+**タイトル**: サンドボックス テスト用ビルドの作成
 
 ### 概要
 
-課金機能のテストを実機やシミュレータで行うため、EAS を使用して開発ビルド（Development Build）を作成します。
+`docs/sandbox-testing-guide.md` に従ってサンドボックス課金テストを行うため、EAS を使用して TestFlight (iOS) および内部テストトラック (Android) に配布可能なビルドを作成します。
 
 ### 要件
 
-- [ ] iOS プラットフォーム用の開発ビルドを作成する
-- [ ] Android プラットフォーム用の開発ビルドを作成する
+- [ ] iOS TestFlight 配布用のビルドを作成する
+- [ ] Android 内部テストトラック配布用のビルドを作成する
 
 ### 技術仕様
 
@@ -19,28 +19,35 @@
 
 ### 実装手順
 
-1. `eas.json` を開き、`development` プロファイルが正しく設定されていることを確認する。
-   - `developmentClient: true` になっている必要がある。
-   - `ios.simulator: true` を設定すると、iOS シミュレータ用のビルドが作成できる。
-2. iOS の開発ビルドを作成するために、`eas build --profile development --platform ios` を実行する。
-3. Android の開発ビルドを作成するために、`eas build --profile development --platform android` を実行する。
-4. ビルドが完了すると、EAS のダッシュボードに QR コードが表示される。これを Expo Go アプリやカメラでスキャンすることで、ビルドされたアプリをデバイスにインストールできる。
+1.  `eas.json` を開き、ビルドプロファイルを確認・設定する。`production` プロファイル（またはテスト専用のプロファイル）が、ストアにアップロード可能な設定になっていることを確認します。
+2.  **iOS ビルドの作成と TestFlight へのアップロード**:
+    - `eas build --profile production --platform ios` を実行します。
+    - EAS が Apple Developer アカウントに接続し、ビルドと署名、App Store Connect へのアップロードを自動的に行います。
+    - アップロード完了後、App Store Connect の TestFlight セクションでビルドを有効化し、テストユーザーに配布します。
+3.  **Android ビルドの作成と内部テストトラックへのアップロード**:
+    - `eas build --profile production --platform android` を実行します。
+    - EAS が Google Play Console の認証情報（サービスアカウントキー）を使用して、ビルドと署名、内部テストトラックへのアップロードを自動的に行います。
+    - アップロード完了後、Google Play Console の内部テストページでリリースを有効化し、テストユーザーに配布します。
+4.  ビルド完了後、各ストアのコンソールからテストユーザーにアプリを配布し、インストールできることを確認します。
 
 ### テスト項目
 
 - [ ] EAS のビルドプロセスがエラーなく完了すること
-- [ ] ビルドされたアプリが実機またはシミュレータにインストールできること
-- [ ] インストールした開発ビルドでアプリが正常に起動すること
+- [ ] ビルドされたアプリが App Store Connect および Google Play Console に正しくアップロードされること
+- [ ] TestFlight / 内部テストトラック経由で、アプリがテストデバイスにインストールできること
+- [ ] インストールしたアプリが正常に起動し、課金画面が表示されること
 
 ### 完了条件
 
-- [ ] iOS と Android の開発ビルドが作成され、デバイスで実行できること
+- [ ] iOS と Android のテストビルドが作成され、各ストアのテスト用プラットフォーム経由でデバイスに配布・実行できること
 
 ### 注意事項
 
-EAS ビルドはクラウド上で行われるため、完了までに時間がかかる場合があります。ビルドプロセス中に Apple Developer Program の認証情報が必要になることがあります。
+- EAS によるストアへの自動アップロードには、事前の設定（Apple Developer Program の API キーや Google Play のサービスアカウント設定など）が必要です。
+- `eas.json` の設定は、お使いのビルド環境に合わせて調整してください。
 
 ### 関連チケット
 
-- P1-004-native-setup
+- P1-002-product-setup
 - P6-001-eas-cli-setup
+- docs/sandbox-testing-guide.md
