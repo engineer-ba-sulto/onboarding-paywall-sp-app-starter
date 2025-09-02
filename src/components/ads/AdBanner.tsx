@@ -1,4 +1,3 @@
-import React from "react";
 import { View } from "react-native";
 import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 import { AdBannerLogicProps, useAdBanner } from "../../hooks/ads";

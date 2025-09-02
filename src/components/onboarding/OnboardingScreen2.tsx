@@ -1,6 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+
+import { Text, View } from "react-native";
+import { NextButton, SkipButton } from "./ui";
 
 interface OnboardingScreen2Props {
   title: string;
@@ -25,18 +26,6 @@ export const OnboardingScreen2: React.FC<OnboardingScreen2Props> = ({
   onNext,
   onSkip,
 }) => {
-  const handleNext = () => {
-    if (onNext) {
-      onNext();
-    }
-  };
-
-  const handleSkip = () => {
-    if (onSkip) {
-      onSkip();
-    }
-  };
-
   return (
     <View
       className="flex-1 justify-center items-center px-8"
@@ -45,14 +34,7 @@ export const OnboardingScreen2: React.FC<OnboardingScreen2Props> = ({
       accessibilityLabel="オンボーディング画面2"
     >
       {/* スキップボタン */}
-      <TouchableOpacity
-        className="absolute top-16 right-6 z-10"
-        onPress={handleSkip}
-        accessibilityRole="button"
-        accessibilityLabel="スキップ"
-      >
-        <Text className="text-gray-500 text-base font-medium">スキップ</Text>
-      </TouchableOpacity>
+      <SkipButton onSkip={onSkip} textColor={textColor} />
 
       {/* メインコンテンツ */}
       <View className="flex-1 justify-center items-center">
@@ -98,16 +80,7 @@ export const OnboardingScreen2: React.FC<OnboardingScreen2Props> = ({
         </View>
 
         {/* 次へボタン */}
-        <View className="opacity-100">
-          <TouchableOpacity
-            className="bg-green-600 px-8 py-4 rounded-full"
-            onPress={handleNext}
-            accessibilityRole="button"
-            accessibilityLabel="次へ"
-          >
-            <Text className="text-white text-lg font-semibold">次へ</Text>
-          </TouchableOpacity>
-        </View>
+        <NextButton onNext={onNext} buttonColor="#16A34A" />
       </View>
     </View>
   );

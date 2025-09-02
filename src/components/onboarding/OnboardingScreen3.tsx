@@ -1,6 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+
+import { Text, View } from "react-native";
+import { NextButton, SkipButton } from "./ui";
 
 interface OnboardingScreen3Props {
   title: string;
@@ -25,18 +26,6 @@ export const OnboardingScreen3: React.FC<OnboardingScreen3Props> = ({
   onComplete,
   onSkip,
 }) => {
-  const handleComplete = () => {
-    if (onComplete) {
-      onComplete();
-    }
-  };
-
-  const handleSkip = () => {
-    if (onSkip) {
-      onSkip();
-    }
-  };
-
   return (
     <View
       className="flex-1 justify-center items-center px-8"
@@ -45,14 +34,7 @@ export const OnboardingScreen3: React.FC<OnboardingScreen3Props> = ({
       accessibilityLabel="オンボーディング画面3"
     >
       {/* スキップボタン */}
-      <TouchableOpacity
-        className="absolute top-16 right-6 z-10"
-        onPress={handleSkip}
-        accessibilityRole="button"
-        accessibilityLabel="スキップ"
-      >
-        <Text className="text-gray-500 text-base font-medium">スキップ</Text>
-      </TouchableOpacity>
+      <SkipButton onSkip={onSkip} textColor={textColor} />
 
       {/* メインコンテンツ */}
       <View className="flex-1 justify-center items-center">
@@ -98,16 +80,7 @@ export const OnboardingScreen3: React.FC<OnboardingScreen3Props> = ({
         </View>
 
         {/* 完了ボタン */}
-        <View className="opacity-100">
-          <TouchableOpacity
-            className="bg-orange-500 px-8 py-4 rounded-full"
-            onPress={handleComplete}
-            accessibilityRole="button"
-            accessibilityLabel="完了"
-          >
-            <Text className="text-white text-lg font-semibold">完了</Text>
-          </TouchableOpacity>
-        </View>
+        <NextButton onNext={onComplete} buttonColor="#F97316" text="完了" />
       </View>
     </View>
   );
