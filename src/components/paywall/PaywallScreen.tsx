@@ -54,8 +54,44 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   onTermsPress,
   onPrivacyPress,
 }) => {
-  const { offering, selectedPackage, isLoading, error, selectPackage } =
-    usePaywall();
+  const {
+    offering,
+    selectedPackage,
+    isLoading,
+    isPurchasing,
+    error,
+    selectPackage,
+    purchasePackage,
+    restorePurchases,
+  } = usePaywall();
+
+  // 購入処理のハンドラー
+  const handlePrimaryPress = async () => {
+    if (selectedPackage && onPrimaryPress) {
+      onPrimaryPress();
+    } else if (selectedPackage) {
+      // デフォルトの購入処理
+      const result = await purchasePackage(selectedPackage);
+      if (result.success) {
+        // 購入成功時の処理（必要に応じて実装）
+        console.log("購入が完了しました");
+      }
+    }
+  };
+
+  // 復元処理のハンドラー
+  const handleSecondaryPress = async () => {
+    if (onSecondaryPress) {
+      onSecondaryPress();
+    } else {
+      // デフォルトの復元処理
+      const result = await restorePurchases();
+      if (result.success) {
+        // 復元成功時の処理（必要に応じて実装）
+        console.log("購入が復元されました");
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -178,20 +214,18 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 ? `${selectedPackage.product.priceString}で${primaryButtonTitle}`
                 : primaryButtonTitle
             }
-            onPress={onPrimaryPress || (() => {})}
+            onPress={handlePrimaryPress}
             variant="primary"
-            loading={loading}
-            disabled={!onPrimaryPress || !selectedPackage}
+            loading={loading || isPurchasing}
+            disabled={!selectedPackage}
           />
-          {onSecondaryPress && (
-            <View className="mt-3">
-              <ActionButton
-                title={secondaryButtonTitle}
-                onPress={onSecondaryPress}
-                variant="secondary"
-              />
-            </View>
-          )}
+          <View className="mt-3">
+            <ActionButton
+              title={secondaryButtonTitle}
+              onPress={handleSecondaryPress}
+              variant="secondary"
+            />
+          </View>
         </View>
 
         {/* 利用規約・プライバシーポリシーリンク */}
